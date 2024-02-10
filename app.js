@@ -45,7 +45,13 @@ const absolute = path.resolve(__dirname, "content", "subflder", "test.txt");
 
 // console.log(absolute);
 
-const { readFileSync, writeFileSync, readFile, writeFile } = require("fs");
+const {
+  readFileSync,
+  writeFileSync,
+  readFile,
+  writeFile,
+  read,
+} = require("fs");
 
 const first = readFileSync("./first.txt", "utf8"); //? This function is only read a file.
 const sec = readFileSync("./sec.txt", "utf8");
@@ -95,3 +101,19 @@ const _ = require("lodash");
 const items = [1, [2, [3, [4]]]];
 const newItems = _.flattenDeep(items);
 console.log(newItems); //* [ 1, 2, 3, 4 ]
+
+//? --------------------------
+
+const getText = (path) => {
+  return new Promise((resolve, reject) => {
+    readFile(path, "utf8", (err, res) => {
+      err ? reject(err) : resolve(res);
+    });
+  });
+};
+
+getText("./first.txt")
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
+
+//*   3:01

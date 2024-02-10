@@ -1,9 +1,10 @@
 const EventEmitter = require("events");
+const { writeFileSync } = require("fs");
 
 const customEmitter = new EventEmitter();
 
 customEmitter.on("response", (name, age) => {
-  console.log(`Data recieved , Name : ${name} , Age : ${age}`);
+  // console.log(`Data recieved , Name : ${name} , Age : ${age}`);
 });
 
 customEmitter.on("response", () => {
@@ -14,12 +15,20 @@ customEmitter.emit("response", "Numan", 17);
 
 //? ----------------------
 
-const http = require("http");
+// for (let i = 0; i <= 100; i++) {
+//   writeFileSync("./bigC.txt", `That file has ${i} strings\n`, { flag: "a" });
+// }
 
-const server = http.createServer();
+const { createReadStream } = require("fs");
 
-server.on("request", (req, res) => {
-  res.end("Welcome to our server...");
+const stream = createReadStream("./bigC.txt", {
+  highWaterMark: 90000,
+  encoding: "utf-8",
 });
 
-server.listen(5000);
+stream.on("data", (result) => {
+  // console.log(result);
+});
+stream.on("error", (err) => {
+  console.log(err);
+});
